@@ -1,0 +1,40 @@
+#  -*-  mode:  ruby -*-
+# vi: set ft=ruby  :
+
+VAGRANTFILE_API_VERSION = "2"
+Vagrant.configure(VAGRANTFILE_API_VERSION)  do  |config|
+  # General Vagrant VM   configuration.
+  config.vm.box  =  "centos/7"
+  config.vm.synced_folder  ".",  "/vagrant"
+
+  #  ControlMaster
+  config.vm.define  "jenkins"  do  |app|
+    app.vm.hostname  =  "jenkins"
+    app.vm.network  :private_network,  ip:  "192.168.60.10"
+    app.vm.provider  :virtualbox  do  |v|
+    	v.memory  =  4096
+    end
+  end
+
+	#  Application  server 1.
+  config.vm.define  "app"  do  |app|
+  	app.vm.hostname  =  "app1.dev"
+  	app.vm.network  :private_network,  ip:  "192.168.60.20"
+	app.vm.provider  :virtualbox  do  |v|
+    	v.memory  =  2048
+    end
+  end
+
+	#  Database  server.
+  config.vm.define  "archivage"  do  |db|
+  	db.vm.hostname  =  "db.dev"
+  	db.vm.network  :private_network,  ip:  "192.168.60.30"
+	db.vm.provider  :virtualbox  do  |v|
+    	v.memory  =  2048
+    end
+  end
+end
+
+$script_inject_pk =<<-'SCRIPT'
+  cat /vagrant/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys
+SCRIPT

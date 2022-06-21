@@ -16,10 +16,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION)  do  |config|
     end
   end
 
-	#  Application  server 1.
-  config.vm.define  "app"  do  |app|
-  	app.vm.hostname  =  "app1.dev"
+	#  Application  server prod.
+  config.vm.define  "prod"  do  |app|
+  	app.vm.hostname  =  "app1.prod"
   	app.vm.network  :private_network,  ip:  "192.168.60.20"
+	app.vm.provider  :virtualbox  do  |v|
+    	v.memory  =  2048
+    end
+  end
+  #  Application  server staging.
+  config.vm.define  "stag"  do  |app|
+  	app.vm.hostname  =  "app1.staging"
+  	app.vm.network  :private_network,  ip:  "192.168.60.21"
 	app.vm.provider  :virtualbox  do  |v|
     	v.memory  =  2048
     end
@@ -33,6 +41,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION)  do  |config|
     	v.memory  =  2048
     end
   end
+  	#  Monitoring  server.
+    config.vm.define  "monitoring"  do  |db|
+      db.vm.hostname  =  "db.dev"
+      db.vm.network  :private_network,  ip:  "192.168.60.40"
+    db.vm.provider  :virtualbox  do  |v|
+        v.memory  =  2048
+      end
+    end
 end
 
 $script_inject_pk =<<-'SCRIPT'

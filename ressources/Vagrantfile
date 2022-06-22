@@ -11,6 +11,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION)  do  |config|
   config.vm.define  "jenkins"  do  |app|
     app.vm.hostname  =  "jenkins"
     app.vm.network  :private_network,  ip:  "192.168.60.10"
+    app.vm.network "forwarded_port", guest: 8080, host: 80
     app.vm.provider  :virtualbox  do  |v|
       v.cpus = 2
     	v.memory  =  4096
@@ -21,6 +22,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION)  do  |config|
   config.vm.define  "prod"  do  |app|
   	app.vm.hostname  =  "app1.prod"
   	app.vm.network  :private_network,  ip:  "192.168.60.20"
+    app.vm.network "forwarded_port", guest: 8080, host: 81
 	app.vm.provider  :virtualbox  do  |v|
     	v.memory  =  1024
     end
@@ -29,6 +31,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION)  do  |config|
   config.vm.define  "stag"  do  |app|
   	app.vm.hostname  =  "app1.staging"
   	app.vm.network  :private_network,  ip:  "192.168.60.21"
+    app.vm.network "forwarded_port", guest: 8080, host: 82
 	app.vm.provider  :virtualbox  do  |v|
     	v.memory  =  1024
     end
@@ -43,7 +46,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION)  do  |config|
       v.memory  =  4096
     end
   end
-  
+
   #  Monitoring  server.
   config.vm.define  "monitoring"  do  |db|
     db.vm.hostname  =  "monitor.dev"

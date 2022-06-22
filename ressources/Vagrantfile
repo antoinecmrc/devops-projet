@@ -13,6 +13,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION)  do  |config|
     app.vm.network  :private_network,  ip:  "192.168.60.10"
     app.vm.provider  :virtualbox  do  |v|
     	v.memory  =  4096
+      v.cpus = 2
     end
   end
 
@@ -21,7 +22,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION)  do  |config|
   	app.vm.hostname  =  "app1.prod"
   	app.vm.network  :private_network,  ip:  "192.168.60.20"
 	app.vm.provider  :virtualbox  do  |v|
-    	v.memory  =  2048
+    	v.memory  =  1024
     end
   end
   #  Application  server staging.
@@ -29,26 +30,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION)  do  |config|
   	app.vm.hostname  =  "app1.staging"
   	app.vm.network  :private_network,  ip:  "192.168.60.21"
 	app.vm.provider  :virtualbox  do  |v|
-    	v.memory  =  2048
+    	v.memory  =  1024
     end
   end
 
-	#  Database  server.
-#  config.vm.define  "archivage"  do  |db|
-#  	db.vm.hostname  =  "db.dev"
-#  	db.vm.network  :private_network,  ip:  "192.168.60.30"
-#	db.vm.provider  :virtualbox  do  |v|
-#    	v.memory  =  2048
-#    end
-#  end
-  	#  Monitoring  server.
-    config.vm.define  "monitoring"  do  |db|
-      db.vm.hostname  =  "db.dev"
-      db.vm.network  :private_network,  ip:  "192.168.60.40"
-    db.vm.provider  :virtualbox  do  |v|
-        v.memory  =  2048
-      end
+  #  Monitoring  server.
+  config.vm.define  "monitoring"  do  |db|
+    db.vm.hostname  =  "db.dev"
+    db.vm.network  :private_network,  ip:  "192.168.60.30"
+  db.vm.provider  :virtualbox  do  |v|
+      v.memory  =  2048
     end
+  end
 end
 
 $script_inject_pk =<<-'SCRIPT'
